@@ -7,8 +7,8 @@ _start:
   csrwi 0x7c1, 0 // disable chicken bits
   li t0, GPIO_BASE
   li t1, 0xffffffff
-  sd zero, 0(t0)
-  sd t1, 0(t0) // Turn on the LED
+  sd t1, 0(t0)
+  sd zero, 0(t0) // Turn on the LED
   li s0, DRAM_BASE
   csrr a0, mhartid
   la a1, _dtb

@@ -1,0 +1,42 @@
+# root
+/*
+!.gitignore
+!project_info.tcl
+!proj/
+!repo/
+!src/
+!scripts/
+!hw_handoff/
+!dts
+!Makefile
+!imgs/
+!bitstream.bif
+!dt_overaly.tcl
+
+# vivado workspace
+proj/*
+
+# hardware handoff
+hw_handoff/*
+!hw_handoff/*.xsa
+
+# ip repository
+repo/**
+!repo/vivado-library
+repo/vivado-library/**
+!repo/local
+!repo/local/**
+!repo/cache
+repo/cache/**
+
+# maintain required directories
+!**/.keep
+
+# rocketchip test result
+*.out
+
+# rocketchip verilog
+src/hdl/*.v
+src/hdl/*.sv
+
+.Xil/

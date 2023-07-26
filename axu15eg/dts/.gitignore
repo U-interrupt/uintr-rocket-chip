@@ -1,0 +1,11 @@
+*.dtb
+*.dts
+*.dtsi
+*.mss
+
+.Xil/
+include/
+
+# keep it
+!rocketchip.dts
+!system.dts

@@ -20,7 +20,7 @@ class WithUIPI extends Config((_, _, _) => {
 })
 
 class UintrConfig extends Config(
-  new WithNBigCores(2) ++
+  new WithNBigCores(4) ++
     new WithNExtTopInterrupts(6) ++
     new WithTimebase((BigInt(10000000))) ++ // 10 MHz
     new WithDTS("freechips.rocketchip-unknown", Nil) ++
@@ -28,6 +28,7 @@ class UintrConfig extends Config(
     new WithCustomBootROM(0x10000, "../common/boot/bootrom/bootrom.img") ++
     new WithDefaultMemPort ++
     new WithDefaultMMIOPort ++
+    new WithDefaultSlavePort ++
     new WithoutTLMonitors ++
     new WithCoherentBusTopology ++
     new BaseSubsystemConfig

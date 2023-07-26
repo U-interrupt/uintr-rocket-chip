@@ -53,7 +53,7 @@ bootrom:
 
 # Build with custom generator and SoC configurations
 build: bootrom $(rocketchip_rtl)
-	cp $(COMMON_DIR)/system_wrapper.v src/hdl/
+	cp $(COMMON_DIR)/$(BOARD)_system_wrapper.v src/hdl/system_wrapper.v
 
 #--------------------------------------------------------------------
 # Software generation
@@ -66,7 +66,7 @@ build: bootrom $(rocketchip_rtl)
 # Vivado project
 #--------------------------------------------------------------------
 
-VIVADO_PROJ = rocket-chip-zcu102
+VIVADO_PROJ = rocket-chip-$(BOARD)
 VIVADO_PROJ_DIR = proj
 DIGILENT_DIR = $(ROOT_DIR)/digilent-vivado-scripts
 
@@ -78,7 +78,7 @@ checkout:
 
 gen_dts:
 	xsct $(COMMON_DIR)/gen_dts.tcl \
-		/tools/Xilinx/device-tree-xlnx $(VIVADO_PROJ_DIR)/system_wrapper.xsa zcu102 dts
+		/tools/Xilinx/device-tree-xlnx $(VIVADO_PROJ_DIR)/system_wrapper.xsa $(BOARD) dts
 	cd dts && gcc -I include -E -nostdinc -undef -D__DTS__ -x assembler-with-cpp -o system.dts system-top.dts
 	dtc -I dts -O dtb -o dts/system.dtb dts/system.dts
 
