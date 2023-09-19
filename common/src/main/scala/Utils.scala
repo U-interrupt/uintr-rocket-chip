@@ -3,8 +3,7 @@ package freechips.rocketchip.uintr
 import Chisel._
 
 object UintrConsts {
-  def uisteBytes = 8.U
-  def uisteBits = 64.U
+  def uisteSizeBits = 3.U
 }
 
 class SUIRS extends Bundle {

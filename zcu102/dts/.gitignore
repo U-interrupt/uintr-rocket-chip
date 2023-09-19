@@ -7,5 +7,7 @@
 include/
 
 # keep it
+!rocketchip-dual.dts
+!rocketchip-single.dts
 !rocketchip.dts
 !system.dts

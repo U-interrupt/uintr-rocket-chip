@@ -76,12 +76,6 @@ checkin:
 checkout:
 	python3 $(DIGILENT_DIR)/git_vivado.py checkout -r . -x $(VIVADO_PROJ_DIR)/$(VIVADO_PROJ).xpr
 
-gen_dts:
-	xsct $(COMMON_DIR)/gen_dts.tcl \
-		/tools/Xilinx/device-tree-xlnx $(VIVADO_PROJ_DIR)/system_wrapper.xsa zcu102 dts
-	cd dts && gcc -I include -E -nostdinc -undef -D__DTS__ -x assembler-with-cpp -o system.dts system-top.dts
-	dtc -I dts -O dtb -o dts/system.dtb dts/system.dts
-
 #--------------------------------------------------------------------
 # Clean rocket-chip project and rocketchip.jar
 #--------------------------------------------------------------------

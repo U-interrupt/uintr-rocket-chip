@@ -1,7 +1,6 @@
 package freechips.rocketchip.uintr
 
 import Chisel._
-import chisel3.DontCare
 import freechips.rocketchip.tile._
 import freechips.rocketchip.config.Parameters
 import freechips.rocketchip.rocket._
@@ -70,7 +69,7 @@ class UIPIImp(outer: UIPI)(implicit p: Parameters) extends LazyRoCCModuleImp(out
       state := s_error
     }.otherwise {
       state := Mux(send, s_wait_mem0, s_wait_mem1)
-      uist_addr := (io.cmd.bits.rs1 << uisteBytes).asUInt + (uintr.suist.base << pgIdxBits)
+      uist_addr := (io.cmd.bits.rs1 << uisteSizeBits).asUInt + (uintr.suist.base << pgIdxBits)
       uintc_addr := opAddr(uintr.suirs.index) | Mux(write || read, highOpOffset.asUInt, actOpOffset.asUInt)
       uintc_data := Mux(write, io.cmd.bits.rs1, Mux(activate, 1.U, 0.U))
       read_valid := read

@@ -45,10 +45,10 @@ module system_wrapper(
   wire        M_AXI_rlast;
 
   // MMIO_AXI
-  (* mark_debug = "TRUE" *) wire        M_MMIO_AXI_awready;
-  (* mark_debug = "TRUE" *) wire        M_MMIO_AXI_awvalid;
+  wire        M_MMIO_AXI_awready;
+  wire        M_MMIO_AXI_awvalid;
   wire [3:0]  M_MMIO_AXI_awid;
-  (* mark_debug = "TRUE" *) wire [31:0] M_MMIO_AXI_awaddr;
+  wire [31:0] M_MMIO_AXI_awaddr;
   wire [7:0]  M_MMIO_AXI_awlen;
   wire [2:0]  M_MMIO_AXI_awsize;
   wire [1:0]  M_MMIO_AXI_awburst;
@@ -56,19 +56,19 @@ module system_wrapper(
   wire [3:0]  M_MMIO_AXI_awcache;
   wire [2:0]  M_MMIO_AXI_awprot;
   wire [3:0]  M_MMIO_AXI_awqos;
-  (* mark_debug = "TRUE" *) wire        M_MMIO_AXI_wready;
-  (* mark_debug = "TRUE" *) wire        M_MMIO_AXI_wvalid;
-  (* mark_debug = "TRUE" *) wire [63:0] M_MMIO_AXI_wdata;
+  wire        M_MMIO_AXI_wready;
+  wire        M_MMIO_AXI_wvalid;
+  wire [63:0] M_MMIO_AXI_wdata;
   wire [3:0]  M_MMIO_AXI_wstrb;
   wire        M_MMIO_AXI_wlast;
   wire        M_MMIO_AXI_bready;
   wire        M_MMIO_AXI_bvalid;
   wire [3:0]  M_MMIO_AXI_bid;
   wire [1:0]  M_MMIO_AXI_bresp;
-  (* mark_debug = "TRUE" *) wire        M_MMIO_AXI_arready;
-  (* mark_debug = "TRUE" *) wire        M_MMIO_AXI_arvalid;
+  wire        M_MMIO_AXI_arready;
+  wire        M_MMIO_AXI_arvalid;
   wire [3:0]  M_MMIO_AXI_arid;
-  (* mark_debug = "TRUE" *) wire [31:0] M_MMIO_AXI_araddr;
+  wire [31:0] M_MMIO_AXI_araddr;
   wire [7:0]  M_MMIO_AXI_arlen;
   wire [2:0]  M_MMIO_AXI_arsize;
   wire [1:0]  M_MMIO_AXI_arburst;
@@ -76,10 +76,10 @@ module system_wrapper(
   wire [3:0]  M_MMIO_AXI_arcache;
   wire [2:0]  M_MMIO_AXI_arprot;
   wire [3:0]  M_MMIO_AXI_arqos;
-  (* mark_debug = "TRUE" *) wire        M_MMIO_AXI_rready;
-  (* mark_debug = "TRUE" *) wire        M_MMIO_AXI_rvalid;
+  wire        M_MMIO_AXI_rready;
+  wire        M_MMIO_AXI_rvalid;
   wire [3:0]  M_MMIO_AXI_rid;
-  (* mark_debug = "TRUE" *) wire [63:0] M_MMIO_AXI_rdata;
+  wire [63:0] M_MMIO_AXI_rdata;
   wire [1:0]  M_MMIO_AXI_rresp;
   wire        M_MMIO_AXI_rlast;
 

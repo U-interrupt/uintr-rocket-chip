@@ -20,7 +20,7 @@ class WithUIPI extends Config((_, _, _) => {
 })
 
 class UintrConfig extends Config(
-  new WithNBigCores(2) ++
+  new WithNBigCores(4) ++
     new WithNExtTopInterrupts(6) ++
     new WithTimebase((BigInt(10000000))) ++ // 10 MHz
     new WithDTS("freechips.rocketchip-unknown", Nil) ++
