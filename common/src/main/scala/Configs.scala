@@ -28,6 +28,7 @@ class UintrConfig extends Config(
     new WithCustomBootROM(0x10000, "../common/boot/bootrom/bootrom.img") ++
     new WithDefaultMemPort ++
     new WithDefaultMMIOPort ++
+    new WithDefaultSlavePort ++
     new WithoutTLMonitors ++
     new WithCoherentBusTopology ++
     new BaseSubsystemConfig

@@ -15,16 +15,19 @@ class Top()(implicit p: Parameters) extends Module {
 
   require(target.mem_axi4.size == 1)
   require(target.mmio_axi4.size == 1)
+  require(target.l2_frontend_bus_axi4.size == 1)
 
   val io = IO(new Bundle {
     val mem_axi4 = target.mem_axi4.head.cloneType
     val mmio_axi4 = target.mmio_axi4.head.cloneType
+    val l2_frontend_bus_axi4 = Flipped(target.l2_frontend_bus_axi4.head.cloneType)
     val sys_reset = Input(Bool())
     val ext_intrs = Input(UInt(p(NExtTopInterrupts).W))
   })
 
   io.mem_axi4 <> target.mem_axi4.head
   io.mmio_axi4 <> target.mmio_axi4.head
+  target.l2_frontend_bus_axi4.head <> io.l2_frontend_bus_axi4
 
   target.reset := reset | io.sys_reset // outer reset
   target.interrupts := io.ext_intrs
@@ -52,6 +55,7 @@ class TestHarness()(implicit p: Parameters) extends Module {
 
 class FPGAZynqTop(implicit p: Parameters) extends RocketSubsystem
   with HasAsyncExtInterrupts
+  with CanHaveSlaveAXI4Port
   with CanHaveMasterAXI4MemPort
   with CanHaveMasterAXI4MMIOPort {
   // Note that setting BootROMLocated will override the reset_vector for all tiles
@@ -68,4 +72,5 @@ class FPGAZynqTopModuleImp(_outer: FPGAZynqTop) extends RocketSubsystemModuleImp
   with DontTouch {
   lazy val mem_axi4 = outer.mem_axi4
   lazy val mmio_axi4 = outer.mmio_axi4
+  lazy val l2_frontend_bus_axi4 = outer.l2_frontend_bus_axi4
 }

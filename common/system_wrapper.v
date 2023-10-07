@@ -1,11 +1,23 @@
 `timescale 1 ps / 1 ps
+`include "axi.vh"
 
 module system_wrapper(
+  input wire gt_ref_clk_clk_n,
+  input wire gt_ref_clk_clk_p,
+  input wire gt_serial_port_grx_n,
+  input wire gt_serial_port_grx_p,
+  output wire gt_serial_port_gtx_n,
+  output wire gt_serial_port_gtx_p,
+  output wire sfp_tx_dis_1,
   input wire UART_rxd,
   output wire UART_txd,
   output wire [7:0] led
 );
-  // MEM_AXI  
+
+  // XXV_DMA_S_AXI
+  `axi_wire(XXV_DMA_AXI, 64, 16);
+
+  // MEM_AXI
   wire        M_AXI_awready;
   wire        M_AXI_awvalid;
   wire [5:0]  M_AXI_awid;
@@ -96,6 +108,8 @@ module system_wrapper(
   wire reset, sys_reset, clock;
   wire [5:0] ext_intrs;
 
+
+
   soc system(
     .clock              (clock              ),
     .reset              (reset              ),
@@ -105,6 +119,18 @@ module system_wrapper(
 
     .UART_txd           (UART_txd           ),
     .UART_rxd           (UART_rxd           ),
+
+    // GTH transceivers ports
+    .gt_ref_clk_clk_n(gt_ref_clk_clk_n),
+    .gt_ref_clk_clk_p(gt_ref_clk_clk_p),
+    .gt_serial_port_grx_n(gt_serial_port_grx_n),
+    .gt_serial_port_grx_p(gt_serial_port_grx_p),
+    .gt_serial_port_gtx_n(gt_serial_port_gtx_n),
+    .gt_serial_port_gtx_p(gt_serial_port_gtx_p),
+    .sfp_tx_dis_1(sfp_tx_dis_1),
+
+    // master AXI interface, 10G/25G ethernet DMA <-> rocket core
+    `axi_connect_if(M_XXV_DMA_AXI, XXV_DMA_AXI),
 
     // slave AXI interface (fpga = master, zynq = slave) connected directly to DDR controller
     .S_AXI_awready      (M_AXI_awready      ),
@@ -146,7 +172,7 @@ module system_wrapper(
     .S_AXI_rdata        (M_AXI_rdata        ),
     .S_AXI_rresp        (M_AXI_rresp        ),
     .S_AXI_rlast        (M_AXI_rlast        ),
-    
+
     // slave AXI interface (fpga = master, zynq = slave) connected directly to UART
     .S_MMIO_AXI_awready (M_MMIO_AXI_awready ),
     .S_MMIO_AXI_awvalid (M_MMIO_AXI_awvalid ),
@@ -171,7 +197,7 @@ module system_wrapper(
     .S_MMIO_AXI_bresp   (M_MMIO_AXI_bresp   ),
     .S_MMIO_AXI_arready (M_MMIO_AXI_arready ),
     .S_MMIO_AXI_arvalid (M_MMIO_AXI_arvalid ),
-    .S_MMIO_AXI_arid    (M_MMIO_AXI_arid    ), 
+    .S_MMIO_AXI_arid    (M_MMIO_AXI_arid    ),
     .S_MMIO_AXI_araddr  (M_MMIO_AXI_araddr  ),
     .S_MMIO_AXI_arlen   (M_MMIO_AXI_arlen   ),
     .S_MMIO_AXI_arsize  (M_MMIO_AXI_arsize  ),
@@ -194,6 +220,45 @@ module system_wrapper(
     .reset                        (reset              ),
     .io_sys_reset                 (sys_reset          ),
     .io_ext_intrs                 (ext_intrs          ),
+
+    // DMA
+    .io_l2_frontend_bus_axi4_aw_ready        (XXV_DMA_AXI_awready ),
+    .io_l2_frontend_bus_axi4_aw_valid        (XXV_DMA_AXI_awvalid ),
+    .io_l2_frontend_bus_axi4_aw_bits_id      (XXV_DMA_AXI_awid    ),
+    .io_l2_frontend_bus_axi4_aw_bits_addr    (XXV_DMA_AXI_awaddr  ),
+    .io_l2_frontend_bus_axi4_aw_bits_len     (XXV_DMA_AXI_awlen   ),
+    .io_l2_frontend_bus_axi4_aw_bits_size    (XXV_DMA_AXI_awsize  ),
+    .io_l2_frontend_bus_axi4_aw_bits_burst   (XXV_DMA_AXI_awburst ),
+    .io_l2_frontend_bus_axi4_aw_bits_lock    (XXV_DMA_AXI_awlock  ),
+    .io_l2_frontend_bus_axi4_aw_bits_cache   (XXV_DMA_AXI_awcache ),
+    .io_l2_frontend_bus_axi4_aw_bits_prot    (XXV_DMA_AXI_awprot  ),
+    .io_l2_frontend_bus_axi4_aw_bits_qos     (XXV_DMA_AXI_awqos   ),
+    .io_l2_frontend_bus_axi4_w_ready         (XXV_DMA_AXI_wready  ),
+    .io_l2_frontend_bus_axi4_w_valid         (XXV_DMA_AXI_wvalid  ),
+    .io_l2_frontend_bus_axi4_w_bits_data     (XXV_DMA_AXI_wdata   ),
+    .io_l2_frontend_bus_axi4_w_bits_strb     (XXV_DMA_AXI_wstrb   ),
+    .io_l2_frontend_bus_axi4_w_bits_last     (XXV_DMA_AXI_wlast   ),
+    .io_l2_frontend_bus_axi4_b_ready         (XXV_DMA_AXI_bready  ),
+    .io_l2_frontend_bus_axi4_b_valid         (XXV_DMA_AXI_bvalid  ),
+    .io_l2_frontend_bus_axi4_b_bits_id       (XXV_DMA_AXI_bid     ),
+    .io_l2_frontend_bus_axi4_b_bits_resp     (XXV_DMA_AXI_bresp   ),
+    .io_l2_frontend_bus_axi4_ar_ready        (XXV_DMA_AXI_arready ),
+    .io_l2_frontend_bus_axi4_ar_valid        (XXV_DMA_AXI_arvalid ),
+    .io_l2_frontend_bus_axi4_ar_bits_id      (XXV_DMA_AXI_arid    ),
+    .io_l2_frontend_bus_axi4_ar_bits_addr    (XXV_DMA_AXI_araddr  ),
+    .io_l2_frontend_bus_axi4_ar_bits_len     (XXV_DMA_AXI_arlen   ),
+    .io_l2_frontend_bus_axi4_ar_bits_size    (XXV_DMA_AXI_arsize  ),
+    .io_l2_frontend_bus_axi4_ar_bits_burst   (XXV_DMA_AXI_arburst ),
+    .io_l2_frontend_bus_axi4_ar_bits_lock    (XXV_DMA_AXI_arlock  ),
+    .io_l2_frontend_bus_axi4_ar_bits_cache   (XXV_DMA_AXI_arcache ),
+    .io_l2_frontend_bus_axi4_ar_bits_prot    (XXV_DMA_AXI_arprot  ),
+    .io_l2_frontend_bus_axi4_ar_bits_qos     (XXV_DMA_AXI_arqos   ),
+    .io_l2_frontend_bus_axi4_r_ready         (XXV_DMA_AXI_rready  ),
+    .io_l2_frontend_bus_axi4_r_valid         (XXV_DMA_AXI_rvalid  ),
+    .io_l2_frontend_bus_axi4_r_bits_id       (XXV_DMA_AXI_rid     ),
+    .io_l2_frontend_bus_axi4_r_bits_data     (XXV_DMA_AXI_rdata   ),
+    .io_l2_frontend_bus_axi4_r_bits_resp     (XXV_DMA_AXI_rresp   ),
+    .io_l2_frontend_bus_axi4_r_bits_last     (XXV_DMA_AXI_rlast   ),
 
     // MEM
     .io_mem_axi4_aw_ready         (M_AXI_awready      ),

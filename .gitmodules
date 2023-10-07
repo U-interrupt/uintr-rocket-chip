@@ -11,7 +11,7 @@
 	url = https://github.com/U-interrupt/riscv-tests
 [submodule "pk"]
 	path = pk
-	url = git@github.com:U-interrupt/riscv-pk.git
+	url = https://github.com/U-interrupt/riscv-pk
 	branch = v1.0.0
 [submodule "digilent-vivado-scripts"]
 	path = digilent-vivado-scripts
